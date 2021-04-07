@@ -20,14 +20,14 @@ app.get('/', (req, res) => {
 })
 
 
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ikwi0.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 console.log(uri);
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
     console.log('connection error: ', err);
   const productCollection = client.db("laptopWorld").collection("products");
-    
+  const orderedCollection = client.db("laptopWorld").collection("orders");
+  
   app.get('/products', (req, res) => {
     productCollection.find()
     .toArray((err, items) => {
@@ -40,6 +40,21 @@ client.connect(err => {
     productCollection.find({_id:ObjectID(req.params.id)})
     .toArray((err, items) => {
       res.send(items[0])
+    })
+  })
+
+  app.post('/checkoutItems',(req, res) =>{
+    const newItems = req.body;
+    orderedCollection.insertOne(newItems)
+    .then(result =>{
+      res.send(result.insertedCount > 0);
+    })
+  })
+
+  app.get('/orderedItems', (req, res) =>{
+    orderedCollection.find({})
+    .toArray((err, documents) =>{
+      res.send(documents);
     })
   })
 
