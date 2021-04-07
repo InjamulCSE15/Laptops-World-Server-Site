@@ -3,7 +3,7 @@ const app = express()
 const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
 const bodyParser = require('body-parser');
-ObjectId = require('mongodb').ObjectId,
+ObjectID = require('mongodb').ObjectID;
 
 require('dotenv').config();
 
@@ -37,7 +37,7 @@ client.connect(err => {
   })
 
   app.get('/checkout/:id', (req, res) => {
-    productCollection.find({_id:ObjectId(req.params.id)})
+    productCollection.find({_id:ObjectID(req.params.id)})
     .toArray((err, items) => {
       res.send(items[0])
     })
