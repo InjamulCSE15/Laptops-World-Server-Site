@@ -54,7 +54,7 @@ client.connect(err => {
 
   app.post('/addProduct', (req, res) => {
     const newProduct = req.body;
-    console.log('adding new product', newProduct);
+    
     productCollection.insertOne(newProduct)
     .then(res => {
       
