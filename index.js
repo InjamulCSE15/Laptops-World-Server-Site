@@ -52,6 +52,7 @@ client.connect(err => {
   })
 
   app.get('/orderedItems', (req, res) =>{
+    console.log(req.query.email);
     orderedCollection.find({email: req.query.email})
     .toArray((err, documents) =>{
       res.send(documents);
